@@ -33,7 +33,7 @@ function calculate() {
     console.log(calculatedValue);
     const result = document.createElement('p');
     result.setAttribute("class", "heading");
-    result.innerText = `Result is ${calculatedValue}`;
+    result.innerText = `${Num1} ${selectedOperator} ${Num2} = ${calculatedValue} \uD83D\uDE1B`;
     container.appendChild(result);
 }
 
