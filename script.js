@@ -1,41 +1,63 @@
-let buttonClick = document.getElementById('btn');
-const container = document.getElementById("container");
-const operatorValue = document.getElementById('operatorvalue');
-let selectedOperator;
+const enter = document.getElementById("enter");
+const numbers = Array.from(document.querySelectorAll('.number'));
+const operators = Array.from(document.querySelectorAll('#operator'));
+const outPutScreen = document.querySelector(".output");
+const clear = document.getElementById("clear");
+const remove = document.getElementById("delete")
 
-operatorValue.addEventListener("click", (event) => {
-    if (event.target.matches('.button')) {
-        selectedOperator = event.target.value;
-    }
-});
+console.log(remove);
+numbers.forEach(num => {
+    num.addEventListener("click", () => {
+        if (outPutScreen.innerText === "Invalid value"){
+            clearEnter();
+        } else {
+            outPutScreen.innerText += num.innerText;
+        }
+    })
+})
 
-function calculator(operator,num1,num2){
-    switch (operator) {
-        case '+':
-            return num1 + num2;
-        case '-':
-            return num1 - num2;
-        case '*':
-            return num1 * num2;
-        case '/':
-            return num1 / num2;
-        default:
-            return 'Toodles!!';
-    }
-}
+operators.forEach(operator => {
+    operator.addEventListener("click", () => {
+        if (outPutScreen.value === "") {
+            if (operator.innerText === "-" | operator.innerText === "." ) {
+                outPutScreen.innerText += operator.innerText
+            } else {
+                return
+            }
+        } else if (outPutScreen.innerText === "Invalid value") {
+            clearEnter();
+        }
+        else {
+            if(operator.innerText === "x"){
+                outPutScreen.innerText += "*"
+                operator.innerText = "x"
+                return
+            }
+            outPutScreen.innerText += operator.innerText
+        }    
+    })
+})
 
-
+enter.addEventListener('click',calculate);
 function calculate() {
-    let Num1 = Number(document.getElementById('input1').value);
-    let Num2 = Number(document.getElementById('input2').value);
-    console.log(Num1,selectedOperator,Num2);
-    let calculatedValue = calculator(selectedOperator,Num1,Num2);
-    console.log(calculatedValue);
-    const result = document.createElement('p');
-    result.setAttribute("class", "heading");
-    result.innerText = `${Num1} ${selectedOperator} ${Num2} = ${calculatedValue} \uD83D\uDE1B`;
-    container.appendChild(result);
+    if(outPutScreen.innerText==""){
+        outPutScreen.innerText="";
+        outPutScreen += operators.innerText;    
+    }
+    try {
+        outPutScreen.innerText = eval(outPutScreen.innerText)
+    } catch (e) {
+        outPutScreen.value = "Invalid value"     
+    }   
 }
 
-buttonClick.addEventListener('click',calculate);
+remove.addEventListener('click',removeNumber);
+function removeNumber() {
+    outPutScreen.innerText = outPutScreen.innerText.slice(0, -1)
+}
 
+clear.addEventListener("click", clearEnter)
+
+function clearEnter () {
+    outPutScreen.innerText = ""
+}
